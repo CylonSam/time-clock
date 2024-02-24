@@ -18,7 +18,7 @@ def create_employee(db: Session, employee: schemas.EmployeeCreate):
                                   email=employee.email,
                                   leader=employee.leader,
                                   team_id=employee.team_id,
-                                  hashed_password=employee.password,
+                                  hashed_password=hash(employee.password),
                                   status=employee.status)
 
     db.add(db_employee)
