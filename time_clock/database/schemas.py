@@ -124,23 +124,6 @@ class TimeClockConfiguration(TimeClockConfigurationBase):
         from_attributes = True
 
 
-class DaysOffTableBase(BaseModel):
-    date: date
-    type: str
-
-
-class DaysOffTableCreate(DaysOffTableBase):
-    pass
-
-
-class DaysOffTable(DaysOffTableBase):
-    id: int
-    calendar_id: int
-
-    class Config:
-        from_attributes = True
-
-
 class HolidayTableBase(BaseModel):
     name: str
     date: date
@@ -158,38 +141,46 @@ class HolidayTable(HolidayTableBase):
         from_attributes = True
 
 
-class CalendarBase(BaseModel):
-    name: str
-
-
-class CalendarCreate(CalendarBase):
-    pass
-
-
-class Calendar(CalendarBase):
-    id: int
-    work_schedule_id: int
-    holiday_table: HolidayTable = None
-    days_off_table: DaysOffTable = None
-
-    class Config:
-        from_attributes = True
-
-
 class WorkScheduleBase(BaseModel):
     work_days: str
     work_hours: int
     start_time: int
+    employee_id: int
+    calendar_id: int
 
 
 class WorkScheduleCreate(WorkScheduleBase):
     pass
 
 
+class WorkScheduleUpdate(WorkScheduleBase):
+    pass
+
+
 class WorkSchedule(WorkScheduleBase):
     id: int
-    employee_id: int
-    calendar: Calendar = None
+
+    class Config:
+        from_attributes = True
+
+
+class CalendarBase(BaseModel):
+    city: str
+    state: str
+
+
+class CalendarCreate(CalendarBase):
+    pass
+
+
+class CalendarUpdate(CalendarBase):
+    pass
+
+
+class Calendar(CalendarBase):
+    id: int
+    work_schedules: list[WorkSchedule] = []
+    holiday_table: HolidayTable = None
 
     class Config:
         from_attributes = True
