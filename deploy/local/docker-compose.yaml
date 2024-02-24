@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  postgresql:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: time_clock
+    ports:
+      - "5432:5432"
+#    volumes:
+#      - postgresql_data:/var/lib/postgresql/data
