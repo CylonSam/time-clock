@@ -42,6 +42,7 @@ class WorkSchedule(Base):
     work_hours = Column(Integer)
     start_time = Column(Integer)  # Start time in minutes
     employee_id = Column(Integer, ForeignKey("employees.id"))
+    calendar_id = Column(Integer, ForeignKey("calendars.id"))
 
     employee = relationship("Employee", back_populates="work_schedule")
     calendar = relationship("Calendar", back_populates="work_schedules")
@@ -51,12 +52,11 @@ class Calendar(Base):
     __tablename__ = "calendars"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True)
-    work_schedule_id = Column(Integer, ForeignKey("work_schedules.id"))
+    city = Column(String)
+    state = Column(String)
 
-    work_schedules = relationship("WorkSchedule", back_populates="calendar")
     holiday_table = relationship("HolidayTable", back_populates="calendars")
-    days_off_table = relationship("DaysOffTable", back_populates="calendar")
+    work_schedules = relationship("WorkSchedule", back_populates="calendar")
 
 
 class HolidayTable(Base):
@@ -68,17 +68,6 @@ class HolidayTable(Base):
     calendar_id = Column(Integer, ForeignKey("calendars.id"))
 
     calendars = relationship("Calendar", back_populates="holiday_table")
-
-
-class DaysOffTable(Base):
-    __tablename__ = "days_off_table"
-
-    id = Column(Integer, primary_key=True)
-    date = Column(Date)
-    type = Column(String)  # day-off, vacation
-    calendar_id = Column(Integer, ForeignKey("calendars.id"))
-
-    calendar = relationship("Calendar", back_populates="days_off_table")
 
 
 class TimeClockConfiguration(Base):
